@@ -215,6 +215,27 @@ const App: React.FC = () => {
                         />
                     </Grid>
                     <Grid item xs={12}>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <Controller
+                                name="dateOfBirth"
+                                control={control}
+                                render={({field}) =>
+                                    <DatePicker
+                                        {...field}
+                                        label="Date of Birth"
+                                        renderInput={(params: any) =>
+                                            <TextField {...params}
+                                                       fullWidth
+                                                       error={!!errors.dateOfBirth}
+                                                       helperText={errors.dateOfBirth?.message}
+                                            />
+                                        }
+                                    />
+                                }
+                            />
+                        </LocalizationProvider>
+                    </Grid>
+                    <Grid item xs={12}>
                         <Controller
                             name="password"
                             control={control}
@@ -261,27 +282,6 @@ const App: React.FC = () => {
                                 />
                             }
                         />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <Controller
-                                name="dateOfBirth"
-                                control={control}
-                                render={({field}) =>
-                                    <DatePicker
-                                        {...field}
-                                        label="Date of Birth"
-                                        renderInput={(params: any) =>
-                                            <TextField {...params}
-                                                       fullWidth
-                                                       error={!!errors.dateOfBirth}
-                                                       helperText={errors.dateOfBirth?.message}
-                                            />
-                                        }
-                                    />
-                                }
-                            />
-                        </LocalizationProvider>
                     </Grid>
                     <Grid item xs={12}>
                         <Controller
