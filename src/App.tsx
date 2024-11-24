@@ -22,6 +22,7 @@ import Recaptcha from 'react-google-recaptcha';
 import * as yup from 'yup';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useEffect} from 'react';
 
 // Validation schema
 const validationSchema = yup.object().shape({
@@ -32,8 +33,8 @@ const validationSchema = yup.object().shape({
     postcode: yup.string().required('Postcode is required'),
     country: yup.string().required('Country is required'),
     email: yup.string().email('Invalid email format').required('Email is required'),
-    username: yup.string().min(4, 'Username must be at least 4 characters').required('Username is required'),
-    password: yup.string().min(8, 'Password must be at least 8 characters').required('Password is required'),
+    username: yup.string().min(4, 'At least 4 characters').matches(/^\S*$/, 'No whitespaces allowed').required('Username is required'),
+    password: yup.string().min(8, 'At least 8 characters').matches(/[@$!%*?&#]/, 'At least one special character').matches(/[0-9]/, 'At least one number').required('Password is required'),
     confirmPassword: yup.string().oneOf([yup.ref('password'), undefined], 'Passwords must match').required('Confirm Password is required'),
     dateOfBirth: yup.date().nullable().required('Date of Birth is required').test('DOB', 'You must be at least 18 years old', (value) => {
         return value && value <= new Date(new Date().setFullYear(new Date().getFullYear() - 18));
@@ -52,11 +53,13 @@ const validationSchema = yup.object().shape({
 });
 
 const App: React.FC = () => {
-    const {handleSubmit, control, formState: {errors}, setValue} = useForm({
+    const {handleSubmit, control, formState: {errors}, setValue, watch} = useForm({
         resolver: yupResolver(validationSchema),
     });
 
     const [showPassword, setShowPassword] = useState(false);
+    const password = watch('password');
+    const username = watch('username');
 
     const handlePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -74,6 +77,8 @@ const App: React.FC = () => {
         console.info(`{"message":"Successfully uploaded files and checked input","level":"info"}`);
         console.info(`POST /login 200 22 - ${Math.random() * 60 + 1} ms`);
     };
+
+    const getValidationColor = (valid: boolean) => (valid ? 'green' : errors.password ? 'error' : 'textSecondary');
 
     return (
         <Box sx={{maxWidth: 500, mx: "auto", p: 3, boxShadow: 3, borderRadius: 2}}>
@@ -207,8 +212,10 @@ const App: React.FC = () => {
                                 </>
                             )}
                         />
-                        <Typography variant="body2" color="textSecondary">At least 4 characters</Typography>
-                        <Typography variant="body2" color="textSecondary">no whitespaces</Typography>
+                        <Typography variant="body2" color={getValidationColor(username?.length >= 4)}>At least 4
+                            characters</Typography>
+                        <Typography variant="body2" color={getValidationColor(/^\S*$/.test(username))}>No
+                            whitespaces</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -254,15 +261,12 @@ const App: React.FC = () => {
                                 />
                             }
                         />
-                        <Typography variant="body2" color="textSecondary">
-                            • At least 8 characters
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            • At least one special character
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            • At least one number
-                        </Typography>
+                        <Typography variant="body2" color={getValidationColor(password?.length >= 8)}>• At least 8
+                            characters</Typography>
+                        <Typography variant="body2" color={getValidationColor(/[@$!%*?&#]/.test(password))}>• At least
+                            one special character</Typography>
+                        <Typography variant="body2" color={getValidationColor(/[0-9]/.test(password))}>• At least one
+                            number</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Controller
