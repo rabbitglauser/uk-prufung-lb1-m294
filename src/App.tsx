@@ -325,9 +325,12 @@ const App: React.FC = () => {
                                     <input
                                         type="file"
                                         hidden
+                                        accept=".jpeg,.png,.jpg,.pdf" // Only accept the specified file types
                                         onChange={(e) => {
-                                            if (e.target.files && e.target.files[0]) {
+                                            if (e.target.files && e.target.files[0] && e.target.files[0].size <= 2000000) { // Max size 2MB
                                                 setValue('idConfirmation', e.target.files);
+                                            } else {
+                                                setValue('idConfirmation', []); // Set to empty array instead of null
                                             }
                                         }}
                                     />
