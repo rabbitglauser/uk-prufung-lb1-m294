@@ -11,6 +11,7 @@ import {
     InputAdornment,
     IconButton,
     Alert,
+    Paper
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -22,7 +23,6 @@ import Recaptcha from 'react-google-recaptcha';
 import * as yup from 'yup';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useEffect} from 'react';
 
 // Validation schema
 const validationSchema = yup.object().shape({
@@ -67,12 +67,7 @@ const App: React.FC = () => {
     };
 
     const onSubmit = async (data: any) => {
-        // Perform form submission logic
-
         console.log("Form data submitted:", data);
-        // Handle server submission and response
-
-        // Logging output format compliant with Docker logging
         console.info(`{"message":"POST /login","level":"info"}`);
         console.info(`{"message":"New user added to database","level":"info"}`);
         console.info(`{"message":"Successfully uploaded files and checked input","level":"info"}`);
@@ -82,8 +77,8 @@ const App: React.FC = () => {
     const getValidationColor = (valid: boolean) => (valid ? 'green' : errors.password ? 'error' : 'textSecondary');
 
     return (
-        <Box sx={{maxWidth: 500, mx: "auto", p: 3, boxShadow: 3, borderRadius: 2}}>
-            <Typography variant="h5" textAlign="center" gutterBottom>
+        <Paper elevation={3} sx={{padding: 4, maxWidth: 600, margin: 'auto', mt: 5, borderRadius: 3}}>
+            <Typography variant="h4" textAlign="center" gutterBottom>
                 Sign Up
             </Typography>
             {Object.keys(errors).length > 0 && (
@@ -92,7 +87,7 @@ const App: React.FC = () => {
                 </Alert>
             )}
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={2}>
+                <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Controller
                             name="fullName"
@@ -298,24 +293,6 @@ const App: React.FC = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <Controller
-                            name="dateOfBirth"
-                            control={control}
-                            render={({field}) => (
-                                <TextField
-                                    {...field}
-                                    label="Date of Birth *"
-                                    type="date"
-                                    InputLabelProps={{shrink: true}} // Ensures the label shrinks above the input
-                                    fullWidth
-                                    error={!!errors.dateOfBirth}
-                                    helperText={errors.dateOfBirth?.message}
-                                />
-                            )}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <Controller
                             name="idConfirmation"
                             control={control}
                             render={({field}) => (
@@ -329,12 +306,12 @@ const App: React.FC = () => {
                                     <input
                                         type="file"
                                         hidden
-                                        accept=".jpeg,.png,.jpg,.pdf" // Only accept the specified file types
+                                        accept=".jpeg,.png,.jpg,.pdf"
                                         onChange={(e) => {
-                                            if (e.target.files && e.target.files[0] && e.target.files[0].size <= 2000000) { // Max size 2MB
+                                            if (e.target.files && e.target.files[0] && e.target.files[0].size <= 2000000) {
                                                 setValue('idConfirmation', e.target.files);
                                             } else {
-                                                setValue('idConfirmation', []); // Set to empty array instead of null
+                                                setValue('idConfirmation', []);
                                             }
                                         }}
                                     />
@@ -382,13 +359,13 @@ const App: React.FC = () => {
                         )}
                     </Grid>
                 </Grid>
-                <Box mt={2}>
+                <Box mt={3}>
                     <Button type="submit" variant="contained" color="primary" fullWidth>
                         Submit
                     </Button>
                 </Box>
             </form>
-        </Box>
+        </Paper>
     );
 };
 
