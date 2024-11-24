@@ -93,7 +93,7 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) =>
                                 <TextField {...field}
-                                           label="Full Name"
+                                           label="Full Name *"
                                            fullWidth
                                            error={!!errors.fullName}
                                            helperText={errors.fullName?.message}
@@ -107,7 +107,7 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) =>
                                 <TextField {...field}
-                                           label="Phone Number"
+                                           label="Phone Number *"
                                            type="tel"
                                            fullWidth
                                            error={!!errors.phoneNumber}
@@ -122,7 +122,7 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) =>
                                 <TextField {...field}
-                                           label="Address"
+                                           label="Address *"
                                            fullWidth
                                            error={!!errors.address}
                                            helperText={errors.address?.message}
@@ -136,7 +136,7 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) =>
                                 <TextField {...field}
-                                           label="City"
+                                           label="City *"
                                            fullWidth
                                            error={!!errors.city}
                                            helperText={errors.city?.message}
@@ -150,7 +150,7 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) =>
                                 <TextField {...field}
-                                           label="Postcode"
+                                           label="Postcode *"
                                            fullWidth
                                            error={!!errors.postcode}
                                            helperText={errors.postcode?.message}
@@ -164,7 +164,7 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) =>
                                 <TextField {...field}
-                                           label="Country"
+                                           label="Country *"
                                            select
                                            fullWidth
                                            error={!!errors.country}
@@ -183,7 +183,7 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) =>
                                 <TextField {...field}
-                                           label="Email"
+                                           label="Email *"
                                            type="email"
                                            fullWidth
                                            error={!!errors.email}
@@ -196,15 +196,19 @@ const App: React.FC = () => {
                         <Controller
                             name="username"
                             control={control}
-                            render={({field}) =>
-                                <TextField {...field}
-                                           label="Username"
-                                           fullWidth
-                                           error={!!errors.username}
-                                           helperText={errors.username?.message}
-                                />
-                            }
+                            render={({field}) => (
+                                <>
+                                    <TextField {...field}
+                                               label="Username *"
+                                               fullWidth
+                                               error={!!errors.username}
+                                               helperText={errors.username?.message}
+                                    />
+                                </>
+                            )}
                         />
+                        <Typography variant="body2" color="textSecondary">At least 4 characters</Typography>
+                        <Typography variant="body2" color="textSecondary">no whitespaces</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -214,7 +218,7 @@ const App: React.FC = () => {
                                 render={({field}) =>
                                     <DatePicker
                                         {...field}
-                                        label="Date of Birth"
+                                        label="Date of Birth *"
                                         renderInput={(params: any) =>
                                             <TextField {...params}
                                                        fullWidth
@@ -233,7 +237,7 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) =>
                                 <TextField {...field}
-                                           label="Password"
+                                           label="Password *"
                                            type={showPassword ? "text" : "password"}
                                            fullWidth
                                            error={!!errors.password}
@@ -250,6 +254,15 @@ const App: React.FC = () => {
                                 />
                             }
                         />
+                        <Typography variant="body2" color="textSecondary">
+                            • At least 8 characters
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            • At least one special character
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            • At least one number
+                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Controller
@@ -257,7 +270,7 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) =>
                                 <TextField {...field}
-                                           label="Confirm Password"
+                                           label="Confirm Password *"
                                            type={showPassword ? "text" : "password"}
                                            fullWidth
                                            error={!!errors.confirmPassword}
@@ -279,12 +292,12 @@ const App: React.FC = () => {
                         <Controller
                             name="dateOfBirth"
                             control={control}
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <TextField
                                     {...field}
-                                    label="Date of Birth"
+                                    label="Date of Birth *"
                                     type="date"
-                                    InputLabelProps={{ shrink: true }} // Ensures the label shrinks above the input
+                                    InputLabelProps={{shrink: true}} // Ensures the label shrinks above the input
                                     fullWidth
                                     error={!!errors.dateOfBirth}
                                     helperText={errors.dateOfBirth?.message}
@@ -304,7 +317,7 @@ const App: React.FC = () => {
                                     fullWidth
                                     startIcon={<FileUploadIcon/>}
                                 >
-                                    Upload ID Confirmation
+                                    Upload ID Confirmation *
                                     <input
                                         type="file"
                                         hidden
@@ -330,7 +343,7 @@ const App: React.FC = () => {
                             render={({field}) =>
                                 <FormControlLabel
                                     control={<Checkbox {...field} checked={field.value}/>}
-                                    label="I have read and accepted all terms and conditions"
+                                    label="I have read and accepted all terms and conditions *"
                                 />
                             }
                         />
