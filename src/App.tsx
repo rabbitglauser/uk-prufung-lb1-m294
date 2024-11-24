@@ -78,7 +78,7 @@ const App: React.FC = () => {
 
     useEffect(() => {
         if (fullName === 'Alex Turler') {
-            setAvatarSrc('Alex-isnt-this-funny.jpg');
+            setAvatarSrc('./assets/alex-turler.jpg');
         } else if (fullName) {
             const initials = fullName.split(' ').map(name => name[0]).join('');
             setAvatarSrc(undefined);
