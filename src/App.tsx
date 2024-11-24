@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     TextField,
     Button,
@@ -36,7 +36,6 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-// Validation schema
 const validationSchema = yup.object().shape({
     fullName: yup.string().required('Full Name is required'),
     phoneNumber: yup.string().required('Phone Number is required'),
@@ -71,9 +70,23 @@ const App: React.FC = () => {
     });
 
     const [showPassword, setShowPassword] = useState(false);
+    const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
     const password = watch('password');
-    const username = watch('username');
+    const fullName = watch('fullName');
     const email = watch('email');
+    const username = watch('username');
+
+    useEffect(() => {
+        if (fullName === 'Alex Turler') {
+            setAvatarSrc('Alex-isnt-this-funny.jpg');
+        } else if (fullName) {
+            const initials = fullName.split(' ').map(name => name[0]).join('');
+            setAvatarSrc(undefined);
+            setAvatarSrc(initials);
+        } else {
+            setAvatarSrc(undefined);
+        }
+    }, [fullName]);
 
     const handlePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -92,7 +105,15 @@ const App: React.FC = () => {
     return (
         <Paper elevation={3} sx={{padding: 4, maxWidth: 700, margin: 'auto', mt: 5, borderRadius: 3}}
                className={classes.root}>
-            <Avatar sx={{width: 72, height: 72, margin: 'auto', mb: 3}}>SU</Avatar>
+            <Avatar sx={{width: 72, height: 72, margin: 'auto', mb: 3}}>
+                {avatarSrc ? (
+                    typeof avatarSrc === 'string' && avatarSrc.endsWith('.jpg') ? (
+                        <img src={avatarSrc} alt="avatar" style={{width: '100%', height: '100%', objectFit: 'cover'}}/>
+                    ) : (
+                        avatarSrc
+                    )
+                ) : 'SU'}
+            </Avatar>
             <Typography variant="h4" textAlign="center" gutterBottom>
                 Sign Up
             </Typography>
