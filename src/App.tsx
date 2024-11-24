@@ -60,6 +60,7 @@ const App: React.FC = () => {
     const [showPassword, setShowPassword] = useState(false);
     const password = watch('password');
     const username = watch('username');
+    const email = watch('email');
 
     const handlePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -196,6 +197,9 @@ const App: React.FC = () => {
                                 />
                             }
                         />
+                        <Typography variant="body2"
+                                    color={getValidationColor(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))}>Valid email
+                            format</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Controller
