@@ -11,8 +11,11 @@ import {
     InputAdornment,
     IconButton,
     Alert,
-    Paper
+    Paper,
+    Avatar,
+    Divider,
 } from '@mui/material';
+import {makeStyles} from '@mui/styles';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FileUploadIcon from '@mui/icons-material/CloudUpload';
@@ -23,6 +26,15 @@ import Recaptcha from 'react-google-recaptcha';
 import * as yup from 'yup';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import 'flag-icons/css/flag-icons.min.css';
+
+const useStyles = makeStyles(() => ({
+    root: {
+        '& .MuiTextField-root': {
+            marginBottom: 16,
+        },
+    },
+}));
 
 // Validation schema
 const validationSchema = yup.object().shape({
@@ -53,6 +65,7 @@ const validationSchema = yup.object().shape({
 });
 
 const App: React.FC = () => {
+    const classes = useStyles();
     const {handleSubmit, control, formState: {errors}, setValue, watch} = useForm({
         resolver: yupResolver(validationSchema),
     });
@@ -77,7 +90,9 @@ const App: React.FC = () => {
     const getValidationColor = (valid: boolean) => (valid ? 'green' : errors.password ? 'error' : 'textSecondary');
 
     return (
-        <Paper elevation={3} sx={{padding: 4, maxWidth: 600, margin: 'auto', mt: 5, borderRadius: 3}}>
+        <Paper elevation={3} sx={{padding: 4, maxWidth: 700, margin: 'auto', mt: 5, borderRadius: 3}}
+               className={classes.root}>
+            <Avatar sx={{width: 72, height: 72, margin: 'auto', mb: 3}}>SU</Avatar>
             <Typography variant="h4" textAlign="center" gutterBottom>
                 Sign Up
             </Typography>
@@ -171,9 +186,50 @@ const App: React.FC = () => {
                                            error={!!errors.country}
                                            helperText={errors.country?.message}
                                 >
-                                    <MenuItem value="USA">USA</MenuItem>
-                                    <MenuItem value="Canada">Canada</MenuItem>
-                                    <MenuItem value="UK">UK</MenuItem>
+                                    <MenuItem value="Switzerland">
+                                        <span className="fi fi-ch" style={{marginRight: 8}}></span>
+                                        Switzerland
+                                    </MenuItem>
+                                    <MenuItem value="Germany">
+                                        <span className="fi fi-de" style={{marginRight: 8}}></span>
+                                        Germany
+                                    </MenuItem>
+                                    <MenuItem value="Austria">
+                                        <span className="fi fi-at" style={{marginRight: 8}}></span>
+                                        Austria
+                                    </MenuItem>
+                                    <MenuItem value="USA">
+                                        <span className="fi fi-us" style={{marginRight: 8}}></span>
+                                        USA
+                                    </MenuItem>
+                                    <MenuItem value="Canada">
+                                        <span className="fi fi-ca" style={{marginRight: 8}}></span>
+                                        Canada
+                                    </MenuItem>
+                                    <MenuItem value="UK">
+                                        <span className="fi fi-gb" style={{marginRight: 8}}></span>
+                                        UK
+                                    </MenuItem>
+                                    <MenuItem value="France">
+                                        <span className="fi fi-fr" style={{marginRight: 8}}></span>
+                                        France
+                                    </MenuItem>
+                                    <MenuItem value="Italy">
+                                        <span className="fi fi-it" style={{marginRight: 8}}></span>
+                                        Italy
+                                    </MenuItem>
+                                    <MenuItem value="Spain">
+                                        <span className="fi fi-es" style={{marginRight: 8}}></span>
+                                        Spain
+                                    </MenuItem>
+                                    <MenuItem value="Japan">
+                                        <span className="fi fi-jp" style={{marginRight: 8}}></span>
+                                        Japan
+                                    </MenuItem>
+                                    <MenuItem value="China">
+                                        <span className="fi fi-cn" style={{marginRight: 8}}></span>
+                                        China
+                                    </MenuItem>
                                 </TextField>
                             }
                         />
@@ -359,6 +415,7 @@ const App: React.FC = () => {
                         )}
                     </Grid>
                 </Grid>
+                <Divider sx={{my: 3}}/>
                 <Box mt={3}>
                     <Button type="submit" variant="contained" color="primary" fullWidth>
                         Submit
