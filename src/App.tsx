@@ -104,7 +104,7 @@ const App: React.FC = () => {
         const response = await fetch('http://localhost:3002/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'form-data'
             },
             body: JSON.stringify(data)
         });
