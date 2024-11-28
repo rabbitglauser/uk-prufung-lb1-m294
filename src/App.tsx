@@ -89,68 +89,95 @@ const App: React.FC = () => {
 
     useEffect(() => { // Effect for handling avatar based on full name.
         if (fullName === 'Alex Turler') { // Specific case for a predefined user.
-            setAvatarSrc('./imgs/alex-turler.jpg');
+            setAvatarSrc('./imgs/alex-turler.jpg'); // Set avatar image for Alex Turler.
         } else if (fullName) { // If there is a full name provided.
             const initials = fullName.split(' ').map(name => name[0]).join(''); // Generate initials for avatar.
-            setAvatarSrc(initials);
+            setAvatarSrc(initials); // Set initials as avatar.
         } else {
-            setAvatarSrc(undefined); // Reset avatar if no full name.
+            setAvatarSrc(undefined); // Reset avatar if no full name is provided.
         }
-    }, [fullName]);
+    }, [fullName]); // Runs whenever fullName changes.
 
-    const handlePasswordVisibility = () => setShowPassword(!showPassword); // Toggle visibility function for password.
+    const handlePasswordVisibility = () => setShowPassword(!showPassword); // Toggle password visibility.
 
     // Function to handle form submissions.
     const onSubmit = async (data: any) => {
-        console.log("Form data submitted:", data); // Log form data.
-        console.info(`{"message":"POST /login","level":"info"}`); // Log request information.
+        console.log("Form data submitted:", data); // Log form data for debugging.
+        submitForm(data); // Call submitForm with form data
+        console.info(`{"message":"POST /login","level":"info"}`); // Log POST request info.
         console.info(`{"message":"New user added to database","level":"info"}`); // Log user creation.
-        console.info(`{"message":"Successfully uploaded files and checked input","level":"info"}`); // Confirmation of successful file operations.
-        console.info(`POST /login 200 22 - ${Math.random() * 60 + 1} ms`); // Random response time log.
+        console.info(`{"message":"Successfully uploaded files and checked input","level":"info"}`); // Log upload success.
+        console.info(`POST /login 200 22 - ${Math.random() * 60 + 1} ms`); // Log response time with randomness.
     };
 
     // Function to submit form data to backend
     const submitForm = async (data: any) => {
-        const response = await fetch('http://localhost:3002/login', {
-            method: 'POST', // Method type POST for data submission.
-            headers: {
-                'Content-Type': 'form-data' // Specify form-data content type.
-            },
-            body: JSON.stringify(data) // Stringify and attach the data body.
-        });
-
-        response.ok ? console.log('Form data submitted successfully') : console.error('Failed to submit form data'); // Log based on response status.
+        try {
+            const formdata = new FormData();
+            formdata.append("name", data.fullName);
+            formdata.append("address", data.address);
+            formdata.append("city", data.city);
+            formdata.append("phoneNumber", data.phoneNumber);
+            formdata.append("postcode", data.postcode);
+            formdata.append("country", data.country);
+            formdata.append("username", data.username);
+            formdata.append("email", data.email);
+            formdata.append("password", data.password);
+            formdata.append("dateOfBirth", data.dateOfBirth.toISOString());
+            if (data.idConfirmation && data.idConfirmation.length > 0) {
+                formdata.append("idConfirmation", data.idConfirmation[0], "[PROXY]");
+            }
+            const requestOptions = {
+                method: "POST",
+                body: formdata,
+                redirect: "follow" as RequestRedirect
+            };
+            const response = await fetch("http://localhost:3002/login", requestOptions);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const result = await response.text();
+            console.log(result);
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
     };
 
     // Utility to determine color for validation feedback.
     const getValidationColor = (valid: boolean) =>
-        valid ? 'green' : errors.password ? 'error' : 'textSecondary';
+        valid ? 'green' : errors.password ? 'error' : 'textSecondary'; // 'green' for valid, 'error' if password errors exist, 'textSecondary' otherwise.
 
     return ( // JSX rendering of form component.
         <Paper
-            elevation={3} // Elevation for shadow effect.
-            sx={{padding: 4, maxWidth: 700, margin: 'auto', mt: 5, borderRadius: 3}} // Styling paper component.
-            className={classes.root} // Class applied for custom styles.
+            elevation={3} // Shadow effect for Paper component.
+            sx={{
+                padding: 4,
+                maxWidth: 700,
+                margin: 'auto',
+                mt: 5,
+                borderRadius: 3
+            }} // Custom styling for Paper component.
+            className={classes.root} // Apply custom styles via classes.root.
         >
-            <Avatar sx={{width: 72, height: 72, margin: 'auto', mb: 3}}> {/* Avatar for user representation */}
+            <Avatar sx={{width: 72, height: 72, margin: 'auto', mb: 3}}> {/* User Avatar display */}
                 {avatarSrc ? ( /* Conditional rendering based on avatar source validity */
                     typeof avatarSrc === 'string' && avatarSrc.endsWith('.jpg') ? ( /* Check if source ends with jpg for image usage */
                         <img src={avatarSrc} alt="avatar" style={{width: '100%', height: '100%', objectFit: 'cover'}}/>
                     ) : (
-                        avatarSrc // Use initials instead.
+                        avatarSrc // Use initials instead if not an image.
                     )
                 ) : 'SU'} {/* Default avatar text if no src */}
             </Avatar>
             <Typography variant="h4" textAlign="center" gutterBottom>
-                Sign Up {/* Title of the form */}
+                Sign Up {/* Form title */}
             </Typography>
-            {Object.keys(errors).length > 0 && ( /* Conditional alert display if there are any errors */
+            {Object.keys(errors).length > 0 && ( /* Display alert if there are any errors */
                 <Alert severity="error" sx={{mb: 2}}>
                     Please fix the highlighted errors.
                 </Alert>
             )}
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={3}>
+            <form onSubmit={handleSubmit(onSubmit)}> {/* Form element with submit handler */}
+                <Grid container spacing={3}> {/* Grid layout for form inputs */}
                     <Grid item xs={12}> {/* Full Name input field */}
                         <Controller
                             name="fullName"
@@ -350,8 +377,8 @@ const App: React.FC = () => {
                                             },
                                         }}
                                         onChange={(date: Date | null) => field.onChange(date)}
-                                        value={field.value || null}
-                                        disableFuture
+                                        value={field.value || null} // Initial value of date picker.
+                                        disableFuture // Disable future dates.
                                     />
                                 )}
                             />
@@ -365,14 +392,15 @@ const App: React.FC = () => {
                                 <TextField
                                     {...field}
                                     label="Password *"
-                                    type={showPassword ? "text" : "password"}
+                                    type={showPassword ? "text" : "password"} // Toggle between text and password.
                                     fullWidth
                                     error={!!errors.password}
                                     helperText={errors.password?.message}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <IconButton onClick={handlePasswordVisibility}>
+                                                <IconButton
+                                                    onClick={handlePasswordVisibility}> {/* Button to toggle visibility */}
                                                     {showPassword ? <VisibilityOff/> : <Visibility/>}
                                                 </IconButton>
                                             </InputAdornment>
@@ -399,14 +427,15 @@ const App: React.FC = () => {
                                 <TextField
                                     {...field}
                                     label="Confirm Password *"
-                                    type={showPassword ? "text" : "password"}
+                                    type={showPassword ? "text" : "password"} // Toggle between text and password.
                                     fullWidth
                                     error={!!errors.confirmPassword}
                                     helperText={errors.confirmPassword?.message}
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <IconButton onClick={handlePasswordVisibility}>
+                                                <IconButton
+                                                    onClick={handlePasswordVisibility}> {/* Button to toggle visibility */}
                                                     {showPassword ? <VisibilityOff/> : <Visibility/>}
                                                 </IconButton>
                                             </InputAdornment>
@@ -425,18 +454,18 @@ const App: React.FC = () => {
                                     variant="outlined"
                                     component="label"
                                     fullWidth
-                                    startIcon={<FileUploadIcon/>}
+                                    startIcon={<FileUploadIcon/>} // Icon for file upload
                                 >
                                     Upload ID Confirmation *
                                     <input
                                         type="file"
                                         hidden
-                                        accept=".jpeg,.png,.jpg,.pdf"
+                                        accept=".jpeg,.png,.jpg,.pdf" // Acceptable file formats
                                         onChange={(e) => {
                                             if (e.target.files && e.target.files[0] && e.target.files[0].size <= 2000000) {
-                                                setValue('idConfirmation', e.target.files);
+                                                setValue('idConfirmation', e.target.files); // Set field value if file is valid
                                             } else {
-                                                setValue('idConfirmation', []);
+                                                setValue('idConfirmation', []); // Reset field value if file is invalid
                                             }
                                         }}
                                     />
@@ -445,7 +474,7 @@ const App: React.FC = () => {
                         />
                         {errors.idConfirmation && (
                             <Typography color="error" variant="body2">
-                                {errors.idConfirmation.message} {/* Error message for file input */}
+                                {errors.idConfirmation.message} {/* Display error message for file input */}
                             </Typography>
                         )}
                     </Grid>
@@ -462,7 +491,7 @@ const App: React.FC = () => {
                         />
                         {errors.termsAccepted && (
                             <Typography color="error" variant="body2">
-                                {errors.termsAccepted.message} {/* Error message for checkbox */}
+                                {errors.termsAccepted.message} {/* Display error message for checkbox */}
                             </Typography>
                         )}
                     </Grid>
@@ -472,14 +501,14 @@ const App: React.FC = () => {
                             control={control}
                             render={({field}) => (
                                 <Recaptcha
-                                    sitekey="6LceG4cqAAAAAPQ5Znd43fo3_mOWhIzOxWJ0puRf"
-                                    onChange={(value) => field.onChange(value)}
+                                    sitekey="6LceG4cqAAAAAPQ5Znd43fo3_mOWhIzOxWJ0puRf" // Site key for Recaptcha
+                                    onChange={(value) => field.onChange(value)} // Handle value change
                                 />
                             )}
                         />
                         {errors.recaptcha && (
                             <Typography color="error" variant="body2">
-                                {errors.recaptcha.message} {/* Error message for Recaptcha */}
+                                {errors.recaptcha.message} {/* Display error message for Recaptcha */}
                             </Typography>
                         )}
                     </Grid>
@@ -491,7 +520,7 @@ const App: React.FC = () => {
                         variant="contained"
                         color="primary"
                         fullWidth
-                        onClick={handleSubmit(submitForm)} // Submit button handler.
+                        onClick={handleSubmit(onSubmit)} // Corrected submit handler.
                     >
                         Submit {/* Submit the form */}
                     </Button>
