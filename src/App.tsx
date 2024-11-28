@@ -100,6 +100,22 @@ const App: React.FC = () => {
         console.info(`POST /login 200 22 - ${Math.random() * 60 + 1} ms`);
     };
 
+    const submitForm = async (data: any) => {
+        const response = await fetch('http://localhost:3002/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            console.log('Form data submitted successfully');
+        } else {
+            console.error('Failed to submit form data');
+        }
+    };
+
     const getValidationColor = (valid: boolean) => (valid ? 'green' : errors.password ? 'error' : 'textSecondary');
 
     return (
@@ -443,21 +459,7 @@ const App: React.FC = () => {
                         variant="contained"
                         color="primary"
                         fullWidth
-                        onClick={handleSubmit(async (data) => {
-                            const response = await fetch('http://localhost:3002/login', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(data)
-                            });
-
-                            if (response.ok) {
-                                console.log('Form data submitted successfully');
-                            } else {
-                                console.error('Failed to submit form data');
-                            }
-                        })}
+                        onClick={handleSubmit(submitForm)}
                     >
                         Submit
                     </Button>
