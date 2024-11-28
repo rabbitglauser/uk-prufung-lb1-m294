@@ -113,33 +113,36 @@ const App: React.FC = () => {
     // Function to submit form data to backend
     const submitForm = async (data: any) => {
         try {
-            const formdata = new FormData();
-            formdata.append("name", data.fullName);
-            formdata.append("address", data.address);
-            formdata.append("city", data.city);
-            formdata.append("phoneNumber", data.phoneNumber);
-            formdata.append("postcode", data.postcode);
-            formdata.append("country", data.country);
-            formdata.append("username", data.username);
-            formdata.append("email", data.email);
-            formdata.append("password", data.password);
-            formdata.append("dateOfBirth", data.dateOfBirth.toISOString());
+            const formdata = new FormData(); // Create a new FormData object for the form.
+            formdata.append("name", data.fullName); // Append full name to form data.
+            formdata.append("address", data.address); // Append address.
+            formdata.append("city", data.city); // Append city.
+            formdata.append("phoneNumber", data.phoneNumber); // Append phone number.
+            formdata.append("postcode", data.postcode); // Append postcode.
+            formdata.append("country", data.country); // Append country.
+            formdata.append("username", data.username); // Append username.
+            formdata.append("email", data.email); // Append email.
+            formdata.append("password", data.password); // Append password.
+            formdata.append("dateOfBirth", data.dateOfBirth.toISOString()); // Convert date of birth into ISO string format and append it.
+            // Check if ID confirmation is provided and append it to form data if available.
             if (data.idConfirmation && data.idConfirmation.length > 0) {
                 formdata.append("idConfirmation", data.idConfirmation[0], "[PROXY]");
             }
+
             const requestOptions = {
-                method: "POST",
-                body: formdata,
-                redirect: "follow" as RequestRedirect
+                method: "POST", // HTTP method.
+                body: formdata, // Form data to be sent.
+                redirect: "follow" as RequestRedirect // Redirect policy.
             };
-            const response = await fetch("http://localhost:3002/login", requestOptions);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+
+            const response = await fetch("http://localhost:3002/login", requestOptions); // Make an HTTP request to login endpoint.
+            if (!response.ok) { // Check if the response is not ok.
+                throw new Error(`HTTP error! Status: ${response.status}`); // Throw an error if request failed.
             }
-            const result = await response.text();
-            console.log(result);
+            const result = await response.text(); // Read the response text.
+            console.log(result); // Log the result.
         } catch (error) {
-            console.error('Fetch error:', error);
+            console.error('Fetch error:', error); // Error handling in case of failure.
         }
     };
 
