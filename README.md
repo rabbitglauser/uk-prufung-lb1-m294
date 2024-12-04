@@ -1,46 +1,185 @@
-# Getting Started with Create React App
+# 🚀 Crypto Signup App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1. 📝 Preface
 
-## Available Scripts
+### 1.1 🎯 Purpose  
+This document outlines the development of a crypto market registration form as part of LB2 for Module 294. The project involves creating an interactive front-end webpage using **React**, **TypeScript**, and **Material-UI (MUI)**, with a focus on proper validation, security, and interactivity.
 
-In the project directory, you can run:
+### 1.2 Prerequisites
+To run and develop the application, the following tools are required:
+- **Node.js** (LTS version recommended)
+- A React app initialized with:  
 
-### `npm start`
+  npx create-react-app --template typescript
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Crypto Market Registration Form
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## 1.3 LB2 Details
 
-### `npm test`
+- **Auxiliary Means:** Open Book  
+- **Weight:** 70%  
+- **Group Size:** Individual  
+- **Duration:**  
+  - 1-2 hours for installation  
+  - 13 hours for programming work  
+- **Assessment:** Linear  
+- **Points:** 70  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 2. The Project: Crypto Market Registration Form
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 2.1 General Description
+The goal of this project is to implement a user registration form for a crypto marketplace. Users can fill in their details, and upon submission, the data is sent to a backend server after validating all inputs.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2.2 Technology Stack
 
-### `npm run eject`
+- **React** (with TypeScript)  
+- **React Hook Forms** for form handling and validation  
+- **Material-UI (MUI)** for styling  
+- **Docker** for server management  
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+---
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 2.3 Project Specifications
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+#### Required Fields:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. **Name**: Required  
+2. **Phone Number**: Required  
+3. **Address**: Required  
+4. **City**: Required  
+5. **Country**:  
+   - Dropdown selection from a predefined list  
+   - Required  
+6. **Postcode**: Required  
+7. **Email**:  
+   - Required  
+   - Must follow proper email format  
+8. **Username**:  
+   - Required  
+   - Unique (server rejects duplicates)  
+   - Reasonable restrictions (e.g., length, characters)  
+9. **Password**:  
+   - Required  
+   - Must meet security restrictions  
+   - Confirm password field to match  
+10. **Date of Birth**:  
+    - Required  
+    - Users must be 18+ years old  
+11. **ID Confirmation**:  
+    - Upload an official document in **JPEG**, **PNG**, or **PDF** format  
+    - File size restriction applies  
 
-## Learn More
+#### Additional Features:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **Submit Button**:  
+  - Validates all fields  
+  - Sends data to the backend on success  
+  - Displays errors for invalid inputs  
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
+
+### 2.4 Bonus Objectives
+
+1. **Terms and Conditions**:  
+   - A checkbox to confirm acceptance.  
+2. **Captcha**:  
+   - Google Captcha to verify user authenticity.  
+3. **Flags for Country Dropdown**:  
+   - Show flags alongside country names (e.g., Switzerland, Germany, Austria).  
+
+---
+
+### 2.5 Design Guidelines
+
+- Use **Material-UI** for form styling.  
+- Indicate invalid inputs through visual feedback (e.g., red borders or error messages).  
+- Redirect users to a confirmation page upon successful submission.  
+
+---
+
+### 2.6 Functionality
+
+- **Validation**: Ensure all fields are correctly filled before submission.  
+- **Feedback**: Show interactive error messages for invalid inputs.  
+- **Server Communication**:  
+  - Send data via a `POST` request to the backend.  
+  - Handle server responses (e.g., display a message if the username is already taken).  
+
+#### Backend Example:
+
+```json
+{
+  "name": "Hans Fritz",
+  "address": "Bachweg 23",
+  "city": "Zurich",
+  "phoneNumber": "+41712345678",
+  "postcode": "8001",
+  "country": "Switzerland",
+  "username": "lol32",
+  "email": "hans.fritz@example.com",
+  "password": "qwerty123",
+  "dateOfBirth": "1986-12-18T15:28:00.000Z"
+}
+Server listens on port 3002.
+
+## Server Information
+
+- **Server Port:** 3002  
+- **File Format Restrictions for `idConfirmation` Files:**  
+  - `image/png`  
+  - `image/jpeg`  
+  - `image/jpg`  
+  - `application/pdf`  
+
+---
+
+## 3. Evaluation Criteria
+
+### 3.1 Form Implementation (50%):
+
+- Clean, modular code  
+- Effective use of TypeScript and React features  
+- Asynchronous communication with the backend  
+
+### 3.2 Validation & Security (30%):
+
+- Proper validation for all fields  
+- Secure password and file handling  
+
+### 3.3 Completeness (20%):
+
+- All required fields implemented  
+- Valid countries dropdown  
+- Error handling on submit  
+
+### 3.4 Bonus (12% max):
+
+- Terms & Conditions checkbox  
+- Captcha implementation  
+- Country flags  
+
+---
+
+## 4. Additional Exercises
+
+### Date Format:
+
+- Adjust date input to German format (e.g., **DD.MM.YYYY**).  
+
+### Country Flags:
+
+- Display flags alongside specific countries.  
+- Prioritize **Switzerland**, **Germany**, and **Austria**.  
+
+---
+
+## Submission
+
+1. **Exclude `node_modules`:** Ensure the `node_modules` folder is excluded, for example, using `.gitignore`.  
+2. **Submit Options:**  
+   - Push your solution to the designated Git repository.  
+   - Alternatively, upload the project as a **ZIP file**.  
