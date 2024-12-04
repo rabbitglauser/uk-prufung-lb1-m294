@@ -111,7 +111,7 @@ The goal of this project is to implement a user registration form for a crypto m
 
 #### Backend Example:
 
-
+```json
 {
   "name": "Hans Fritz",
   "address": "Bachweg 23",
@@ -125,7 +125,7 @@ The goal of this project is to implement a user registration form for a crypto m
   "dateOfBirth": "1986-12-18T15:28:00.000Z"
 }
 
-```json
+
 Server listens on port 3002.
 
 ## Server Information
