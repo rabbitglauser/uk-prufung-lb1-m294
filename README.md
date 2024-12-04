@@ -109,25 +109,6 @@ The goal of this project is to implement a user registration form for a crypto m
   - Send data via a `POST` request to the backend.  
   - Handle server responses (e.g., display a message if the username is already taken).  
 
-#### Backend Example:
-
-```json
-{
-  "name": "Hans Fritz",
-  "address": "Bachweg 23",
-  "city": "Zurich",
-  "phoneNumber": "+41712345678",
-  "postcode": "8001",
-  "country": "Switzerland",
-  "username": "lol32",
-  "email": "hans.fritz@example.com",
-  "password": "qwerty123",
-  "dateOfBirth": "1986-12-18T15:28:00.000Z"
-}
-
-
-Server listens on port 3002.
-
 ## Server Information
 
 - **Server Port:** 3002  
